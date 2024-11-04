@@ -1,0 +1,5 @@
+WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
+
+Features
+- 6 GP Registers
+- 

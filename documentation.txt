@@ -1,5 +1,11 @@
 WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
 
-Features
-- 6 GP Registers
-- 
+- 6 General Purpose Registers (GPRs)
+- 3 Specialized Registers
+- 30 Instructions
+- 3 Byte words
+- Interrupt & Memory Mapped I/O modes
+- 65k Core, extended memory options
+- 256 Byte Stack
+
+

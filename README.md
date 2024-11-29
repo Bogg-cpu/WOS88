@@ -1,4 +1,4 @@
-WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
+### WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
 
 
 -------Specifications-------
@@ -6,7 +6,7 @@ WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
 - 3 Specialized Registers
 - 30 Instructions
 - 3 Byte words
-- Memory Mapped I/O
+- Interrupt & Memory Mapped I/O modes
 - 65k Core, extended memory options
 - 256 Byte Stack
 

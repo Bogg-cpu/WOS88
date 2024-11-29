@@ -16,7 +16,7 @@ Memory Mapped I/O Interface
 - Fast, hardware-level peripheral access
 - Stack is unmodified on I/O Requests
 - Straightforward interaction
-- 
+  
 Machine-Readable Program
 - Capable of self-modifying code
 - Minimal decoding needed

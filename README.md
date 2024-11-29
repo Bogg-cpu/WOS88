@@ -20,4 +20,4 @@ Memory Mapped I/O Interface
 Machine-Readable Program
 - Capable of self-modifying code
 - Minimal decoding needed
- -Programmers need a suitable compiler
+- Programmers need a suitable compiler

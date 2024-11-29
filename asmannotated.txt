@@ -1,0 +1,52 @@
+MIM 10 1
+MIM 10 2
+ADD 1 2
+PSH 2 0
+REM ^^ Adding Test
+MIM 10 1
+MIM 7 2
+SUB 1 2
+PSH 2 0
+REM ^^ Subbing Test
+MIM 10 1
+MIM 10 2
+MUL 1 2
+PSH 2 0
+REM ^^ Multing Test
+MIM 10 1
+MIM 5 2
+DIV 1 2
+PSH 2 0
+REM ^^ Division Test
+MIM 0 1
+MIM 0 2
+INC 0 1
+INC 0 1
+INC 0 1
+INC 0 1
+INC 0 1
+PSH 1 0
+REM ^^ Increment Test
+DEC 0 1
+DEC 0 1
+PSH 1 0
+REM ^^ Decrement Test
+MIM 17 1
+MIM 0 2
+MOV 1 2
+PSH 2 0
+REM ^^ Move Test
+MIM 3 7
+LOD 0 1
+PSH 1 0
+REM ^^ Load Test
+MIM 9 7
+STO 0 1
+REM ^^ Store Test
+MIM 55 1
+MIM 372 2
+JMP 0 2
+DEC 0 1
+PSH 1 0
+REM ^^ Jump Test
+HLT 0 0

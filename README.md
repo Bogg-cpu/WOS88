@@ -11,6 +11,7 @@ WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
 - 256 Byte Stack
 
 -------Features-------
+
 Memory Mapped I/O Interface
 - Fast, hardware-level peripheral access
 - Stack is unmodified on I/O Requests

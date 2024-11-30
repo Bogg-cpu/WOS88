@@ -71,12 +71,12 @@ As such, operations may be written as followed:
 | 05  | INC      | Increment      | Adds 1 to the Target.                                                        |
 | 06  | DEC      | Decrement      | Subtracts 1 from the Target.                                                 |
 | 07  | MOV      | Move           | Copies the Source register to the Target.                                    |
-| 08  | MIM      | Move Immediate | Copies the Source value to the Target.                                       |
+| 08  | MPT      | Memory Point   | Sets the Memory Access Register to the Target.                               |
 | 09  | LOD      | Load To Memory | Loads the address at MAR, and copies to Target.                              |
 | 10 | STO      | Store             | Stores the Target value at the address MAR.                                |
 | 11 | JMP      | Jump              | Sets the Program Counter to the Target value.                              |
-| 12 | JZ       | Jump If Flag      | Sets the PC to the Target value if the flag at Source is true.             |
-| 13 | JNZ      | Jump If Not Flag  | Sets the PC to the Target value if the flag at Source is false.            |
+| 12 | JF       | Jump If Flag      | Sets the PC to the Target value if the flag at Source is true.             |
+| 13 | JNF      | Jump If Not Flag  | Sets the PC to the Target value if the flag at Source is false.            |
 | 14 | JSR      | Jump to Subroutine| Pushes the current PC to the stack, and jumps to the specified subroutine. |
 | 15 | RTS      | Return from Subroutine | Sets the PC to the return value popped from the stack.                |
 | 16 | USO      | Unsupported Opcode| Does nothing.                                                              |
@@ -98,7 +98,7 @@ As such, operations may be written as followed:
 
 <br></br>
 # Registers
-WOS88 features six General Purpose Registers (GPRs) and three special registers, arranged in an ID table ranging from 1-9:
+WOS88 features six General Purpose Registers (GPRs) and four special registers, arranged in an ID table ranging from 1-10:
 <br></br>
 
 | ID  | Short    |  Name                  | Function                  | Description |
@@ -112,6 +112,7 @@ WOS88 features six General Purpose Registers (GPRs) and three special registers,
 | 07  | MAR      | Memory Access Register | Special Register          | Stores the pointer for the LOD and STO operations.|
 | 08  | PC       | Program Counter        | Special Register          | Stores the current pointed instruction (in byte triplets) in memory.|
 | 09  | SP       | Stack Pointer          | Special Register          | Points to the current stack address.|
+| 09  | IR       | instruction Register   | Special Register          | Stores the current operation's instruction. |
 
 # Flags
 WOS88 features six processor status flags, arranged in an ID table ranging from 1-6:

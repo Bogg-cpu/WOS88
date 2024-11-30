@@ -7,7 +7,8 @@ ramVerbose = false -- verbose dumps the ram every iteration <Host CPU will suffe
 
 RAM = {} --RAM array. This will be modified later.
 
-Registers = {--Moving forward, A = 1, B = 2, C = 3, D = 4, E = 5, F = 6, MAR = 7, PC = 8, SP = 9.
+Registers = {--Moving forward, A = 1, B = 2, C = 3, D = 4, E = 5, F = 6, MAR = 7, PC = 8, SP = 9, IR = 10.
+[0] = 0, -- Special Zero Register. keeps nils from popping up
 [1] = 0,	--A
 [2] = 0,	--B
 [3] = 0,	--C
@@ -16,7 +17,43 @@ Registers = {--Moving forward, A = 1, B = 2, C = 3, D = 4, E = 5, F = 6, MAR = 7
 [6] = 0,	--F
 [7] = 0,	--MAR
 [8] = 0,	--PC
-[9] = 0 	--SP
+[9] = 0, 	--SP
+[10] = 0	--IR
+}
+
+IRlookup = {
+[0] = "NOP",
+[0] = "ADD",
+[0] = "SUB",
+[0] = "MUL",
+[0] = "DIV",
+[0] = "INC",
+[0] = "DEC",
+[0] = "MOV",
+[0] = "MPT",
+[0] = "LOD",
+[0] = "STO",
+[0] = "JMP",
+[0] = "JF",
+[0] = "JNF",
+[0] = "JSR",
+[0] = "RTS",
+[0] = "USO",
+[0] = "USO",
+[0] = "MIM",
+[0] = "AND",
+[0] = "OR",
+[0] = "XOR",
+[0] = "NOT",
+[0] = "SHL",
+[0] = "SHR",
+[0] = "YIR",
+[0] = "HLI",
+[0] = "RTI",
+[0] = "PSH",
+[0] = "POP",
+[0] = "HLT"
+
 }
 
 ShadowRegisters = {--Moving forward, A = 1, B = 2, C = 3, D = 4, E = 5, F = 6, MAR = 7, PC = 8.
@@ -34,7 +71,7 @@ Flags = {
 [1] = false,	--ZF
 [2] = false,	--OF
 [3] = false,	--EF
-[4] = false,		--NF
+[4] = false,	--NF
 [4] = true,		--1
 [6] = false		--IF
 }
@@ -76,34 +113,41 @@ function RegDump()
 	io.write("PC:",Registers[8],"\n")
 	io.write("IC:",(Registers[8]/3)-84,"\n")
 	io.write("SP:",Registers[9],"\n")
+	io.write("IR:",Registers[10],"\n")
 	io.write("\n")
 end
-function PostOpChecks(target,source)
+
+function PostOpChecks(target, source)
+
   if Registers[target] == 0 then -- check for zero flag
     Flags[1] = true
-	print("Flag \"ZF\" True")
-    else
+    print("Flag \"ZF\" True")
+  else
     Flags[1] = false
-    end
+  end
+
   if Registers[target] == Registers[source] then
-	Flags[2] = true
-	print("Flag \"EF\" True")
-	else
-	Flags[2] = false
-	end
-  --if tonumber(Registers[target]) >= 65535 then -- check for overflow (and handle it)
-    --Registers[target] = Registers[target] % 65536 -- modulo to emulate overflow
-    --Flags[3] = true
-    --print("Flag \"OF\" True")
-    --else
-    --Flags[3] = false
-    --end
-  if Registers[target] < 0 then
-	Flags[4] = true
-	print("Flag \"NF\" True")
-	else
-	Flags[4] = false
-	end
+    Flags[2] = true
+    print("Flag \"EF\" True")
+  else
+    Flags[2] = false
+  end
+
+  -- Uncomment to handle overflow
+  -- if tonumber(Registers[target]) >= 65535 then
+  --   Registers[target] = Registers[target] % 65536
+  --   Flags[3] = true
+  --   print("Flag \"OF\" True")
+  -- else
+  --   Flags[3] = false
+  -- end
+
+  if Registers[target] ~= nil and Registers[target] < 0 then
+    Flags[4] = true
+    print("Flag \"NF\" True")
+  else
+    Flags[4] = false
+  end
 end
     
 
@@ -112,36 +156,46 @@ function Execute(opcode, source, target)
 	--print(opcode, source, target) --TEMP
     if opcode == 0 then --NOP
     --print("NOP")
-    elseif opcode == 1 then --ADD (Verified)
+    elseif opcode == 1 then --ADD
+    print("ADD",Registers[source],Registers[target])
     Registers[target] = Registers[source] + Registers[target]
-	print("ADD",Registers[source],Registers[target])
-    elseif opcode == 2 then --SUB (Verified)
+    elseif opcode == 2 then --SUB
+    print("SUB",Registers[source],Registers[target])
     Registers[target] = Registers[source] - Registers[target]
-    elseif opcode == 3 then --MUL (Verified)
+    elseif opcode == 3 then --MUL
+    print("MUL",Registers[source],Registers[target])
     Registers[target] = Registers[source] * Registers[target]
-	elseif opcode == 4 then --DIV (Verified)
+	elseif opcode == 4 then --DIV
+	print("DIV",Registers[source],Registers[target])
     Registers[target] = Registers[source] / Registers[target]
-	elseif opcode == 5 then --INC (Verified)
+	elseif opcode == 5 then --INC
+	print("INC",Registers[source],Registers[target])
     Registers[target] = Registers[target] + 1
-	elseif opcode == 6 then --DEC (Verified)
+	elseif opcode == 6 then --DEC
+	print("DEC",Registers[source],Registers[target])
     Registers[target] = Registers[target] - 1
-	elseif opcode == 7 then --MOV (Verified)
+	elseif opcode == 7 then --MOV
+	print("MOV",Registers[source],Registers[target])
 	Registers[target] = Registers[source]
-	elseif opcode == 8 then --MPT (Verified)
-	Registers[7] = Registers[source]
-	elseif opcode == 9 then --LOD (Verified)
+	elseif opcode == 8 then --MPT
+	Registers[7] = source
+	print("MPT",source,Registers[7])
+	elseif opcode == 9 then --LOD
 	Registers[target] = RAM[Registers[7]]
-	elseif opcode == 10 then --STO (Verified)
+	elseif opcode == 10 then --STO
 	RAM[Registers[7]] = Registers[target]
-	elseif opcode == 11 then --JMP (Verified)
-	Registers[8] = Registers[target]
+	elseif opcode == 11 then --JMP
+	print("JMP",Registers[8],target)
+	Registers[8] = target
 	elseif opcode == 12 then --JF
+	print("JF",Registers[source],target)
 	if Flags[source] == true then
-		Registers[8] = Registers[target]
+		Registers[8] = target
 		end
 	elseif opcode == 13 then --JNF
+	print("JNF",Registers[source],Registers[target])
 	if Flags[source] == false then
-		Registers[8] = Registers[target]
+		Registers[8] = target
 		end
 	elseif opcode == 14 then --JSR
 	print("(EE) Unfinished Opcode:", opcode)
@@ -222,12 +276,13 @@ function Run()
 	while Running do
 		--insert debug stuff
 		opcode = RAM[Registers[8]+1]
+		Registers[10] = opcode
 		source = RAM[Registers[8]+2]
 		target = RAM[Registers[8]+3]
 		Execute(opcode, source, target)
 		Registers[8] = Registers[8] + 3
 		timestep = timestep + 1
-		if timestep >= 100000 then Running = false print("(EE) Eval Runaway Prevention") end --Evaluation Runaway prevention
+		if timestep >= 100 then Running = false print("(EE) Eval Runaway Prevention") end --Evaluation Runaway prevention
 		end
 end
 

@@ -38,8 +38,8 @@ function compile(filename, preFileSpace, strictmode)
 	
 	local opcodes = { --opcode list in their ASM -> machine code counterparts
 		NOP = 0, ADD = 1, SUB = 2, MUL = 3, DIV = 4, INC = 5, DEC = 6, 
-		MOV = 7, SET = 8, LOD = 9, STO = 10, JMP = 11, JZ = 12, JNZ = 13, 
-		JO = 14, JNO = 15, JE = 16, JNE = 17, MIM = 18, AND = 19, OR = 20, 
+		MOV = 7, SET = 8, LOD = 9, STO = 10, JMP = 11, JF = 12, JNF = 13,
+		JSR = 14, RTS = 15, USO1 = 16, USO2 = 17, MIM = 18, AND = 19, OR = 20,
 		XOR = 21, NOT = 22, SHL = 23, SHR = 24, YIR = 25, HLI = 26, RTI = 27, 
 		PSH = 28, POP = 29, HLT = 30, REM = 31 -- Remark/Comment instruction. Ignored in the compiler.
 	}

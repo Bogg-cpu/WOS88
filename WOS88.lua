@@ -31,9 +31,12 @@ ShadowRegisters = {--Moving forward, A = 1, B = 2, C = 3, D = 4, E = 5, F = 6, M
 }
 
 Flags = {
-ZF = false, --Zero Flag, raised when Target == 0
-OF = false, --Overflow Flag, raised when Target overflows past 255
-EF = false  --Equal Flag, raised when Target == Source after an operation
+[1] = false,	--ZF
+[2] = false,	--OF
+[3] = false,	--EF
+[4] = false,		--NF
+[4] = true,		--1
+[6] = false		--IF
 }
 
 --Debug Funcs
@@ -77,24 +80,30 @@ function RegDump()
 end
 function PostOpChecks(target,source)
   if Registers[target] == 0 then -- check for zero flag
-    Flags.ZF = true
+    Flags[1] = true
 	print("Flag \"ZF\" True")
     else
-    Flags.ZF = false
+    Flags[1] = false
     end
   if Registers[target] == Registers[source] then
-	Flags.EF = true
+	Flags[2] = true
 	print("Flag \"EF\" True")
 	else
-	Flags.EF = false
+	Flags[2] = false
 	end
   --if tonumber(Registers[target]) >= 65535 then -- check for overflow (and handle it)
     --Registers[target] = Registers[target] % 65536 -- modulo to emulate overflow
-    --Flags.OF = true
+    --Flags[3] = true
     --print("Flag \"OF\" True")
     --else
-    --Flags.OF = false
+    --Flags[3] = false
     --end
+  if Registers[target] < 0 then
+	Flags[4] = true
+	print("Flag \"NF\" True")
+	else
+	Flags[4] = false
+	end
 end
     
 
@@ -118,38 +127,30 @@ function Execute(opcode, source, target)
     Registers[target] = Registers[target] - 1
 	elseif opcode == 7 then --MOV (Verified)
 	Registers[target] = Registers[source]
-	elseif opcode == 8 then --MIM (Verified)
+	elseif opcode == 8 then --MPT (Verified)
 	Registers[7] = Registers[source]
-	elseif opcode == 9 then --LOD
+	elseif opcode == 9 then --LOD (Verified)
 	Registers[target] = RAM[Registers[7]]
-	elseif opcode == 10 then --STO
+	elseif opcode == 10 then --STO (Verified)
 	RAM[Registers[7]] = Registers[target]
-	elseif opcode == 11 then --JMP
+	elseif opcode == 11 then --JMP (Verified)
 	Registers[8] = Registers[target]
-	elseif opcode == 12 then --JZ
-	if Flags.ZF == true then
+	elseif opcode == 12 then --JF
+	if Flags[source] == true then
 		Registers[8] = Registers[target]
 		end
-	elseif opcode == 13 then --JNZ
-	if Flags.ZF == false then
+	elseif opcode == 13 then --JNF
+	if Flags[source] == false then
 		Registers[8] = Registers[target]
 		end
-		elseif opcode == 14 then --JO
-	if Flags.OF == true then
-		Registers[8] = Registers[target]
-		end
-	elseif opcode == 15 then --JNO
-	if Flags.OF == false then
-		Registers[8] = Registers[target]
-		end
-	elseif opcode == 16 then --JE
-	if Flags.EF == true then
-		Registers[8] = Registers[target]
-		end
-	elseif opcode == 17 then --JNE
-	if Flags.EF == false then
-		Registers[8] = Registers[target]
-		end
+	elseif opcode == 14 then --JSR
+	print("(EE) Unfinished Opcode:", opcode)
+	elseif opcode == 15 then --RTS
+	print("(EE) Unfinished Opcode:", opcode)
+	elseif opcode == 16 then --USO
+	print("(EE) Removed Opcode:", opcode)
+	elseif opcode == 17 then --USO
+	print("(EE) Removed Opcode:", opcode)
 	elseif opcode == 18 then --MIM
 	Registers[target] = source
 	elseif opcode == 19 then --AND
@@ -172,6 +173,7 @@ function Execute(opcode, source, target)
 	--TBI
 	elseif opcode == 28 then --PSH
 	RAM[Registers[9]] = Registers[source]
+	Registers[target] = Registers[source]
 	Registers[9] = Registers[9] + 1
 	elseif opcode == 29 then --POP
 	Registers[target] = RAM[Registers[9]]

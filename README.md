@@ -1,5 +1,5 @@
 ### WOS88 - A new, streamlined version of the old WOS8 Virtual Architecture
-Current version: 0.1 Git version
+Current version: 0.25
 
 
 -------Specifications-------
